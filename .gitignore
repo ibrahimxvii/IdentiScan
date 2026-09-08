@@ -1,0 +1,56 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environment
+facial_env/
+venv/
+.venv/
+
+# Model files
+model/
+
+# Runtime data (registered people, embeddings, recognition history)
+data/
+
+# Distribution / packaging
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Streamlit
+.streamlit/
+
+# Environment variables / secrets
+
+# Editors / IDEs
+.idea/
+*.swp
+
+# Logs and caches
+*.log
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+config.bat
+node_modules

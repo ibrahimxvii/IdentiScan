@@ -1,0 +1,303 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+    --fg-bg: #0a0d13;
+    --fg-bg-alt: #0e121a;
+    --fg-glass: rgba(255, 255, 255, 0.04);
+    --fg-glass-strong: rgba(255, 255, 255, 0.07);
+    --fg-glass-border: rgba(255, 255, 255, 0.08);
+    --fg-glass-border-hover: rgba(255, 255, 255, 0.18);
+    --fg-text: #eef1f7;
+    --fg-text-dim: #8891a5;
+    --fg-text-faint: #5b6478;
+    --fg-accent: #6f97ff;
+    --fg-accent-2: #8b6bff;
+    --fg-accent-soft: rgba(111, 151, 255, 0.14);
+    --fg-green: #3ddc97;
+    --fg-red: #ff6b7a;
+    --fg-radius: 18px;
+    --fg-radius-sm: 12px;
+    --fg-font-heading: 'Plus Jakarta Sans', 'Inter', sans-serif;
+    --fg-font-body: 'Inter', sans-serif;
+    --fg-font-mono: 'JetBrains Mono', 'Consolas', monospace;
+}
+
+html, body {
+    font-family: var(--fg-font-body);
+}
+
+/* Keep Streamlit's icon font untouched (e.g. sidebar collapse arrow, expander
+   chevrons) - a blanket font-family override here breaks their ligatures. */
+[data-testid="stIconMaterial"],
+[data-testid*="Icon"],
+.material-icons,
+.material-symbols-outlined,
+[class*="material-icon"] {
+    font-family: 'Material Symbols Rounded', 'Material Symbols Outlined', 'Material Icons', sans-serif !important;
+}
+
+.stApp {
+    background:
+        radial-gradient(circle at 8% -10%, rgba(111, 151, 255, 0.12) 0%, transparent 42%),
+        radial-gradient(circle at 92% 0%, rgba(139, 107, 255, 0.09) 0%, transparent 38%),
+        var(--fg-bg);
+    color: var(--fg-text);
+}
+
+/* Sidebar collapse/expand control ONLY. Scoped to descendants of a
+   collapse-testid ancestor (not the bare [data-testid="stIconMaterial"]
+   selector) so real navigation/button icons elsewhere are left alone.
+   Streamlit renders the collapse arrow as Material Symbols ligature text
+   (e.g. "keyboard_double_arrow_right"); if that font ever fails to load,
+   the raw text shows instead, so we draw one plain chevron with ::after
+   instead - no external font involved for this specific control. */
+[data-testid*="ollaps"] [data-testid="stIconMaterial"] {
+    font-size: 0 !important;
+    color: transparent !important;
+    line-height: 1 !important;
+}
+[data-testid*="ollaps"] [data-testid="stIconMaterial"]::after {
+    content: "\00AB";
+    font-family: var(--fg-font-body);
+    font-size: 1rem;
+    color: var(--fg-text-dim);
+    display: inline-block;
+    opacity: 0.75;
+    transition: opacity 0.15s ease, color 0.15s ease;
+}
+[data-testid*="ollaps"] [data-testid="stIconMaterial"]:hover::after {
+    opacity: 1;
+    color: var(--fg-accent);
+}
+/* Fallback: collapse control with no nested stIconMaterial span (raw
+   ligature text directly inside it) - draw the glyph on the wrapper only
+   when it has no such child, so the two rules never fire together. */
+[data-testid*="ollaps"]:not(:has([data-testid="stIconMaterial"]))::after {
+    content: "\00AB";
+    font-family: var(--fg-font-body);
+    font-size: 1rem;
+    color: var(--fg-text-dim);
+    display: inline-block;
+    opacity: 0.75;
+}
+
+/* Real Material Symbols icons (page nav, headers, buttons) - keep visible
+   and themed, sized to sit neatly next to text. */
+[data-testid="stIconMaterial"] {
+    color: var(--fg-accent);
+    vertical-align: -0.15em;
+}
+.fg-header h1 [data-testid="stIconMaterial"],
+.fg-header-icon {
+    font-size: 1.7rem;
+    margin-right: 0.35rem;
+    vertical-align: -0.1em;
+}
+.fg-header-icon {
+    display: inline-block;
+    color: var(--fg-accent);
+    font-variation-settings: 'FILL' 0, 'wght' 500, 'GRAD' 0, 'opsz' 24;
+}
+section[data-testid="stSidebarNav"] [data-testid="stIconMaterial"] {
+    color: var(--fg-text-dim);
+}
+section[data-testid="stSidebarNav"] a[aria-current="page"] [data-testid="stIconMaterial"] {
+    color: var(--fg-accent);
+}
+
+/* Sidebar */
+section[data-testid="stSidebar"] {
+    background: var(--fg-bg-alt);
+    border-right: 1px solid var(--fg-glass-border);
+}
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span:not([data-testid="stIconMaterial"]),
+section[data-testid="stSidebar"] a,
+section[data-testid="stSidebar"] label {
+    font-family: var(--fg-font-body);
+}
+section[data-testid="stSidebar"] a {
+    border-radius: 10px !important;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+section[data-testid="stSidebar"] a:hover {
+    background: var(--fg-accent-soft) !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, .fg-header h1 {
+    font-family: var(--fg-font-heading) !important;
+}
+
+.fg-header {
+    margin-bottom: 0.5rem;
+}
+.fg-header h1 {
+    font-size: 2.15rem;
+    font-weight: 750;
+    letter-spacing: -0.03em;
+    margin-bottom: 0.2rem;
+    background: linear-gradient(90deg, #ffffff 0%, #c7d3f7 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.fg-header p {
+    color: var(--fg-text-dim);
+    margin-top: 0;
+    font-size: 0.98rem;
+    font-weight: 450;
+}
+
+/* Glass cards */
+.fg-card, .fg-metric-card, .fg-empty-state, .fg-person-card {
+    background: var(--fg-glass);
+    border: 1px solid var(--fg-glass-border);
+    border-radius: var(--fg-radius);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    padding: 1.4rem 1.5rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.03);
+    transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+}
+.fg-metric-card:hover, .fg-person-card:hover {
+    border-color: var(--fg-glass-border-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+}
+
+/* Metric card */
+.fg-metric-value {
+    font-family: var(--fg-font-heading);
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--fg-text);
+    line-height: 1.05;
+}
+.fg-metric-label {
+    color: var(--fg-text-dim);
+    font-size: 0.78rem;
+    margin-top: 0.5rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 600;
+}
+.fg-metric-hint {
+    color: var(--fg-text-faint);
+    font-size: 0.75rem;
+    margin-top: 0.55rem;
+}
+
+/* Status pill */
+.fg-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.35rem 0.85rem;
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    margin: 0.15rem 0.4rem 0.15rem 0;
+    border: 1px solid var(--fg-glass-border);
+    background: var(--fg-glass-strong);
+}
+.fg-pill::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+}
+.fg-pill-ok { color: var(--fg-green); background: rgba(61, 220, 151, 0.08); }
+.fg-pill-ok::before { background: var(--fg-green); box-shadow: 0 0 6px var(--fg-green); }
+.fg-pill-bad { color: var(--fg-red); background: rgba(255, 107, 122, 0.08); }
+.fg-pill-bad::before { background: var(--fg-red); box-shadow: 0 0 6px var(--fg-red); }
+
+/* Empty state */
+.fg-empty-state {
+    text-align: center;
+    padding: 3rem 1.5rem;
+}
+.fg-empty-state h3 {
+    font-family: var(--fg-font-heading);
+    margin-bottom: 0.3rem;
+    font-weight: 650;
+}
+.fg-empty-state p { color: var(--fg-text-dim); margin: 0; }
+
+/* Person card (People page) */
+.fg-person-name {
+    font-family: var(--fg-font-heading);
+    font-weight: 650;
+    font-size: 1.1rem;
+    margin-bottom: 0.2rem;
+}
+.fg-person-id {
+    font-family: var(--fg-font-mono);
+    color: var(--fg-accent);
+    font-size: 0.78rem;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.01em;
+}
+.fg-person-meta { color: var(--fg-text-dim); font-size: 0.85rem; line-height: 1.6; }
+
+/* Buttons */
+.stButton>button {
+    border-radius: 11px;
+    border: 1px solid var(--fg-glass-border);
+    background: var(--fg-accent-soft);
+    color: var(--fg-text);
+    font-family: var(--fg-font-body);
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    padding: 0.5rem 1.1rem;
+    transition: all 0.18s ease;
+}
+.stButton>button:hover {
+    border-color: var(--fg-accent);
+    background: linear-gradient(135deg, rgba(111, 151, 255, 0.28), rgba(139, 107, 255, 0.22));
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(111, 151, 255, 0.18);
+}
+
+/* File uploader */
+[data-testid="stFileUploaderDropzone"] {
+    background: var(--fg-glass);
+    border: 1.5px dashed var(--fg-glass-border);
+    border-radius: var(--fg-radius);
+    transition: border-color 0.2s ease;
+}
+[data-testid="stFileUploaderDropzone"]:hover {
+    border-color: var(--fg-accent);
+}
+
+/* Inputs */
+.stTextInput>div>div>input, .stTextArea textarea {
+    border-radius: var(--fg-radius-sm) !important;
+    font-family: var(--fg-font-body) !important;
+    background: rgba(255, 255, 255, 0.03) !important;
+    border-color: var(--fg-glass-border) !important;
+}
+.stTextInput>div>div>input:focus, .stTextArea textarea:focus {
+    border-color: var(--fg-accent) !important;
+    box-shadow: 0 0 0 1px var(--fg-accent) !important;
+}
+.stTextInput label, .stTextArea label, .stSelectbox label {
+    font-weight: 550 !important;
+    color: var(--fg-text-dim) !important;
+    font-size: 0.85rem !important;
+}
+
+/* Native Streamlit metrics / dataframe, if used anywhere */
+[data-testid="stMetricValue"] { font-family: var(--fg-font-heading); }
+[data-testid="stDataFrame"] {
+    border-radius: var(--fg-radius-sm);
+    overflow: hidden;
+    border: 1px solid var(--fg-glass-border);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-thumb { background: var(--fg-glass-border); border-radius: 999px; }
+::-webkit-scrollbar-track { background: transparent; }
